@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div class="cookieBackground">
+
+        <aside class="sideBar">
+            TOP 5 PONTUADORES
+            <ul>
+                <li id="top1"></li>
+                <li id="top2"></li>
+                <li id="top3"></li>
+                <li id="top4"></li>
+                <li id="top5"></li>
+            </ul>
+        </aside>
+        <div class="telaPrincipal">
+            <div class="cookieConteudo">
+            <h1>BORA CLICARRRRRRRR</h1>
+            <button class="cookie" onclick="clicarCookie()"></button>
+            <div class="div-imagem">
+                <img src="../assets/23615ce774a4264fc334b1a5cd422de4.jpg" alt="" class="imagem" id="imagem">
+            </div>
+            <p>Cliques: <span id="contador">0</span></p>
+        </div>
+</div>
+    </div>
+</body>
+
+</html>
+
+<script>
+    let clicks = 0;
+    let cliquesParaCompletar = 10000;
+
+    function clicarCookie() {
+
+        clicks++;
+
+        document.getElementById("contador").innerText = clicks;
+
+        // máximo de 100 cliques
+        let porcentagem = Math.min((clicks/cliquesParaCompletar)*100, 100);
+
+        document.getElementById("imagem").style.clipPath =
+            `inset(${100 - porcentagem}% 0 0 0)`;
+    }
+
+    
+</script>

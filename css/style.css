@@ -1,0 +1,122 @@
+body {
+    margin: 0px;
+}
+
+.conteudo {
+    background-color: black;
+}
+
+.header {
+    background-color: blue;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+}
+
+.quadrado {
+    display: flex;
+    flex-direction: column;
+    border-style: dashed;
+    border-radius: 15px;
+    border-color: aquamarine;
+    border-spacing: 10px;
+    width: 400px;
+    height: 200px;
+    align-items: center;
+    justify-content: center;
+}
+
+.header h1 {
+    text-align: center;
+}
+
+.botoes {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.estiloModal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+}
+
+.cookieBackground {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    background-color: beige;
+    align-items: center;
+
+}
+
+.cookie {
+    width: 400px;
+    height: 400px;
+
+    border: none;
+    border-radius: 50%;
+
+    background-color: #c68642;
+
+    cursor: pointer;
+
+    box-shadow:
+        inset -20px -20px 0px #a66a32,
+        10px 10px 20px rgba(0, 0, 0, 0.5);
+
+    position: absolute;
+
+
+    z-index: 1;
+}
+.cookie:active {
+    transform: scale(0.95);
+}
+.div-imagem {
+    width: 400px;
+    height: 400px;
+
+    position: absolute;
+
+
+    overflow: hidden;
+
+    border-radius: 50%;
+
+    z-index: 2;
+
+    pointer-events: none;
+}
+.imagem{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    clip-path: inset(100% 0 0 0);
+     transition: clip-path 0.15s linear;
+}
+.sideBar {
+    display: flex;
+    height: 100vh;
+    justify-content: flex-start;
+}
+
+.telaPrincipal {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color: brown;
+    height: 100vh;
+    width: 100%;
+    align-items: center;
+}
+.cookieConteudo{
+     width: 400px;
+    height: 400px;
+
+    position: relative;
+}

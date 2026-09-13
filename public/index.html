@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Cookiesz</title>
+</head>
+<body>
+    <div class="header">
+        <div class="quadrado">
+            <h1>Coooooookiesz</h1>
+        <nav class="botoes">
+            <button onclick="abrirLogin()">Login</button>
+            <dialog id="modalLogin"> 
+                <div class="estiloModal">
+                    <button onclick="fecharModal()">X</button>
+                    <h1>Login</h1>
+                    <input type="text" id="loginNome" placeholder="Usuário">
+                    <input type="text" id="loginSenha"placeholder="Senha">
+                    <button onclick="login()">Login</button>
+                    <dialog id="carregandoLogin" display="none">
+                        <div>
+                            <h1>Loading...</h1>
+                        </div>
+                    </dialog>
+                </div>
+            </dialog>
+            <button onclick="abrirCadastro()">Cadastro</button>
+            <dialog id="modalCadastro">
+                <div class="estiloModal">
+                    <button onclick="fecharModal()">X</button>
+                    <h1>Cadastro</h1>
+                    <input type="text" id="cadastrarUsuario" placeholder="Usuário">
+                    <input type="text" id="cadastrarSenha" placeholder="Senha">
+                    <input type="text" id="confirmarSenha" placeholder="confirmarSenha">
+                    <button onclick="cadastrar()">Cadastrar</button>
+                    <dialog id="carregandoCadastro" display="none">
+                        <div>
+                            <h1>Loading...</h1>
+                        </div>
+                    </dialog>
+                </div>
+            </dialog>
+        </nav>
+            </div>   
+    </div>
+</body>
+</html>
+<script>
+    let cadastroNome = document.querySelector("#cadastrarUsuario")
+    let cadastroSenha = document.querySelector("cadastrarSenha")
+    let confirmarSenha = document.querySelector("#confirmarSenha")
+    let modalLogin = document.querySelector("#modalLogin")
+    let modalCadastro = document.querySelector("#modalCadastro")
+    let loginNome = document.querySelector("loginNome")
+    let loginSenha = document.querySelector("loginSenha")
+    
+    function abrirLogin(){
+        modalLogin.showModal()
+    }
+
+    function fecharModal(){
+        modalLogin.close()
+        modalCadastro.close()
+    }
+
+    function abrirCadastro(){
+        modalCadastro.showModal()
+    }
+
+
+    function carregandoLogin(){
+        document.getElementById("carregandoLogin").style.display = "flex";
+    }
+
+      function finalizarCarregandoLogin(){
+        document.getElementById("carregandoLogin").style.display = "none";
+    }
+    function carregandoCadastro(){
+        document.getElementById("carregandoCadastro").style.display = "flex";
+    }
+    function finalizarCarregandoCadastro(){
+        document.getElementById("carregandoCadastro").style.display = "none"
+    }
+
+    function cadastrar(){
+        
+        carregandoCadastro();
+
+        let cadastroNome = cadastroNome.value
+        let cadastroSenha = cadastroSenha.value
+        let confirmarSenha = confirmarSenha.value
+
+        if(confirmarSenha != cadastroSenha){
+            alert("Senhas diferentes, tente novamente")
+            finalizarCarregandoCadastro()
+        }else if(cadastroNome == "" || cadastroSenha == ""){
+            alert("Campo em branco")
+            finalizarCarregandoCadastro()
+        }else{
+            fetch("usuario/cadastrar",{
+                method:"POST",
+                headers:{
+                    "Content-type":"application/json",
+                },
+                body:JSON.stringify({
+                    usuario:cadastroNome,
+                    senha:cadastroSenha
+                }),
+            })
+            .then(function(reposta){
+                if(resposta.ok){
+                    alert("Cadastro realizado com sucesso!")
+                    window.location = "index.html"
+                }else{
+                    alert("Falha no cadastro")
+                    return false;
+                }
+            })
+        }
+    }
+
+function login() {
+  carregandoLogin();
+
+  let UsuarioVar = loginNome.value;
+  let senhaVar = loginSenha.value;
+
+  if (UsuarioVar == "" || senhaVar == "") {
+    alert("Usuário ou senha inválido")
+    finalizarCarregandoLogin();
+    return false;
+  }
+  else {
+    setInterval(sumirMensagem, 5000)
+  }
+
+  console.log("FORM LOGIN: ", UsuarioVar);
+  console.log("FORM SENHA: ", senhaVar);
+
+  fetch("/usuarios/autenticar", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      nomeServer: UsuarioVar,
+      senhaServer: senhaVar
+    })
+  }).then(function (resposta) {
+    console.log("ESTOU NO THEN DO entrar()!")
+
+    if (resposta.ok) {
+      console.log(resposta);
+
+      resposta.json().then(json => {
+        console.log(json);
+        console.log(JSON.stringify(json));
+        sessionStorage.NOME_USUARIO = json.usuario;
+        setTimeout(function () {
+          window.location = "./aplicacao.html";
+        }, 1000);
+
+      });
+
+    } else {
+      console.log("Houve um erro ao tentar realizar o login!");
+
+      resposta.text().then(texto => {
+        console.error(texto);
+        finalizarAguardar(texto);
+      });
+    }
+
+  }).catch(function (erro) {
+    console.log(erro);
+  })
+
+  return false;
+}
+
+    
+    
+
+</script>
