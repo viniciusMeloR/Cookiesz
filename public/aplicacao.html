@@ -1,58 +1,644 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" href="../css/style.css">
-    <title>Document</title>
+
+    <title>Cookiesz | Minhas Anotações</title>
 </head>
 
 <body>
 
-    <div class="cookieBackground">
+    <div class="homepage">
 
-        <aside class="sideBar">
-            TOP 5 PONTUADORES
-            <ul>
-                <li id="top1"></li>
-                <li id="top2"></li>
-                <li id="top3"></li>
-                <li id="top4"></li>
-                <li id="top5"></li>
-            </ul>
-        </aside>
-        <div class="telaPrincipal">
-            <div class="cookieConteudo">
-            <h1>BORA CLICARRRRRRRR</h1>
-            <button class="cookie" onclick="clicarCookie()"></button>
-            <div class="div-imagem">
-                <img src="../assets/23615ce774a4264fc334b1a5cd422de4.jpg" alt="" class="imagem" id="imagem">
+        <!-- =========================================
+             HEADER
+        ========================================= -->
+
+        <header class="header">
+
+            <div class="logo-area">
+
+                <div class="logo">
+                    <span class="logo-mapa">MAPLE</span>
+                    <span class="logo-story">STORAGE</span>
+                </div>
+
+                <div class="logo-subtitulo">
+                    Acompanhando todo o conhecimento
+                </div>
+
             </div>
-            <p>Cliques: <span id="contador">0</span></p>
-        </div>
-</div>
+
+
+            <nav class="botoes">
+
+                <span class="usuario-logado">
+                    🍁 Olá, aventureiro!
+                </span>
+
+                <button class="botao-header" onclick="sair()">
+                    🚪 Sair
+                </button>
+
+            </nav>
+
+        </header>
+
+
+        <!-- =========================================
+             CONTEÚDO PRINCIPAL
+        ========================================= -->
+
+        <main class="conteudo">
+
+            <!-- BANNER -->
+
+            <section class="banner">
+
+                <div class="banner-conteudo">
+
+                    <span class="tag">
+                        🍁 MAPLE WORLD
+                    </span>
+
+                    <h1>
+                        Minhas Anotações
+                    </h1>
+
+                    <p>
+                        Organize todo o conhecimento adquirido
+                        durante sua jornada.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================================
+                 ÁREA DE CONTROLE
+            ========================================= -->
+
+            <section class="painel">
+
+                <div class="painel-topo">
+
+                    <div>
+
+                        <span class="titulo-pequeno">
+                            📚 SEU CONHECIMENTO
+                        </span>
+
+                        <h2>
+                            Central de Estudos
+                        </h2>
+
+                    </div>
+
+
+                    <button class="botao-criar" onclick="abrirModalAnotacao()">
+
+                        <span>＋</span>
+                        Nova anotação
+
+                    </button>
+
+                </div>
+
+
+                <!-- =====================================
+                     PESQUISA E FILTROS
+                ====================================== -->
+
+                <div class="filtros">
+
+                    <div class="campo-pesquisa">
+
+                        <span>🔎</span>
+
+                        <input type="text" id="inputPesquisa" placeholder="Pesquisar anotações...">
+
+                    </div>
+
+
+                    <select id="filtroCategoria">
+
+                        <option value="">
+                            Todas as categorias
+                        </option>
+
+                        <option value="AWS">
+                            ☁️ AWS
+                        </option>
+
+                        <option value="Terraform">
+                            🏗️ Terraform
+                        </option>
+
+                        <option value="Cloud">
+                            ☁️ Cloud
+                        </option>
+
+                        <option value="JavaScript">
+                            🟨 JavaScript
+                        </option>
+
+                        <option value="Node.js">
+                            🟩 Node.js
+                        </option>
+
+                        <option value="Outros">
+                            📚 Outros
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- =====================================
+                     LISTA DE ANOTAÇÕES
+                ====================================== -->
+
+                <div class="anotacoes" id="listaAnotacoes">
+
+
+                    <!-- CARD 1 -->
+
+                    <article class="card-anotacao">
+
+                        <div class="card-topo">
+
+                            <span class="categoria aws">
+                                ☁️ AWS
+                            </span>
+
+                            <div class="acoes">
+
+                                <button class="botao-editar" onclick="editarAnotacao(1)">
+                                    ✏️
+                                </button>
+
+                                <button class="botao-excluir" onclick="excluirAnotacao(1)">
+                                    🗑️
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <h3>
+                            EC2 - Elastic Compute Cloud
+                        </h3>
+
+
+                        <p class="descricao">
+
+                            Serviço da AWS utilizado para
+                            criar e gerenciar máquinas virtuais
+                            na nuvem.
+
+                        </p>
+
+
+                        <div class="card-rodape">
+
+                            <span>
+                                ☁️ AWS
+                            </span>
+
+                            <span>
+                                📅 13/09/2026
+                            </span>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- CARD 2 -->
+
+                    <article class="card-anotacao">
+
+                        <div class="card-topo">
+
+                            <span class="categoria terraform">
+                                🏗️ Terraform
+                            </span>
+
+                            <div class="acoes">
+
+                                <button class="botao-editar" onclick="editarAnotacao(2)">
+                                    ✏️
+                                </button>
+
+                                <button class="botao-excluir" onclick="excluirAnotacao(2)">
+                                    🗑️
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <h3>
+                            Infrastructure as Code
+                        </h3>
+
+
+                        <p class="descricao">
+
+                            Terraform permite criar e gerenciar
+                            recursos de infraestrutura através
+                            de arquivos de configuração.
+
+                        </p>
+
+
+                        <div class="card-rodape">
+
+                            <span>
+                                🏗️ Terraform
+                            </span>
+
+                            <span>
+                                📅 12/09/2026
+                            </span>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- CARD 3 -->
+
+                    <article class="card-anotacao">
+
+                        <div class="card-topo">
+
+                            <span class="categoria cloud">
+                                ☁️ Cloud
+                            </span>
+
+                            <div class="acoes">
+
+                                <button class="botao-editar" onclick="editarAnotacao(3)">
+                                    ✏️
+                                </button>
+
+                                <button class="botao-excluir" onclick="excluirAnotacao(3)">
+                                    🗑️
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <h3>
+                            O que é Cloud Computing?
+                        </h3>
+
+
+                        <p class="descricao">
+
+                            Computação em nuvem permite utilizar
+                            recursos computacionais através da
+                            internet sem precisar manter toda
+                            infraestrutura localmente.
+
+                        </p>
+
+
+                        <div class="card-rodape">
+
+                            <span>
+                                ☁️ Cloud
+                            </span>
+
+                            <span>
+                                📅 10/09/2026
+                            </span>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- =================================
+                         ESTADO SEM ANOTAÇÕES
+                    ================================== -->
+
+                    <div class="sem-anotacoes" id="semAnotacoes">
+
+                        <div class="icone-vazio">
+                            📖
+                        </div>
+
+                        <h3>
+                            Nenhuma anotação encontrada
+                        </h3>
+
+                        <p>
+                            Comece sua jornada criando
+                            sua primeira anotação.
+                        </p>
+
+                        <button class="botao-criar" onclick="abrirModalAnotacao()">
+
+                            ＋ Criar anotação
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+        <!-- =========================================
+             FOOTER
+        ========================================= -->
+
+        <footer class="footer">
+
+            <div class="footer-conteudo">
+
+                <div class="footer-logo">
+
+                    <div class="logo">
+
+                        <span class="logo-mapa">
+                            MAPLE
+                        </span>
+
+                        <span class="logo-story">
+                            STORAGE
+                        </span>
+
+                    </div>
+
+                    <p>
+                        Cookiesz Adventure
+                    </p>
+
+                </div>
+
+
+                <div class="footer-info">
+
+                    <h3>
+                        Maple World
+                    </h3>
+
+                    <p>
+                        Um espaço para explorar, organizar
+                        e compartilhar conhecimento.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </footer>
+
     </div>
+
+
+    <!-- ================================== =======
+         MODAL CRIAR / EDITAR ANOTAÇÃO
+    ========================================= -->
+
+    <dialog id="modalAnotacao">
+
+        <div class="estiloModal">
+
+            <button class="fechar" onclick="fecharModalAnotacao()">
+
+                X
+
+            </button>
+
+
+            <div class="modal-icone">
+                📚
+            </div>
+
+
+            <h1 id="tituloModal">
+                Nova Anotação
+            </h1>
+
+
+            <p class="modal-subtitulo">
+                Registre seu conhecimento
+            </p>
+
+
+            <!-- TÍTULO -->
+
+            <label for="tituloAnotacao">
+                Título
+            </label>
+
+            <input type="text" id="tituloAnotacao" placeholder="Ex: Como funciona uma EC2">
+
+
+            <!-- CATEGORIA -->
+
+            <label for="categoriaAnotacao">
+                Categoria
+            </label>
+
+            <select id="categoriaAnotacao">
+
+                <option value="">
+                    Selecione uma categoria
+                </option>
+
+                <option value="AWS">
+                    ☁️ AWS
+                </option>
+
+                <option value="Terraform">
+                    🏗️ Terraform
+                </option>
+
+                <option value="Cloud">
+                    ☁️ Cloud
+                </option>
+
+                <option value="JavaScript">
+                    🟨 JavaScript
+                </option>
+
+                <option value="Node.js">
+                    🟩 Node.js
+                </option>
+
+                <option value="Outros">
+                    📚 Outros
+                </option>
+
+            </select>
+
+
+            <!-- TECNOLOGIA -->
+
+            <label for="tecnologiaAnotacao">
+                Tecnologia
+            </label>
+
+            <input type="text" id="tecnologiaAnotacao" placeholder="Ex: Amazon EC2">
+
+
+            <!-- CONTEÚDO -->
+
+            <label for="conteudoAnotacao">
+                Conteúdo
+            </label>
+
+            <textarea id="conteudoAnotacao" placeholder="Escreva sua anotação aqui..."></textarea>
+
+
+            <button class="botao-modal" onclick="salvarAnotacao()">
+
+                💾 Salvar anotação
+
+            </button>
+
+        </div>
+
+    </dialog>
+
+
+    <script src="../js/aplicacao.js"></script>
+
 </body>
 
 </html>
-
 <script>
-    let clicks = 0;
-    let cliquesParaCompletar = 10000;
+    function abrirModalAnotacao() {
+        const modal = document.getElementById("modalAnotacao");
+        const tituloModal = document.getElementById("tituloModal");
 
-    function clicarCookie() {
+        tituloModal.innerText = "Nova anotação";
 
-        clicks++;
+        modal.showModal();
 
-        document.getElementById("contador").innerText = clicks;
+        let tituloAnotacao = document.getElementById("#tituloAnotacao").value
+        let categoriaAnotacao = document.getElementById("#categoriaAnotacao").value
+        let tecnologiaAnotacao = document.getElementById("#tecnologiaAnotacao").value
+        let conteudoAnotacao = document.getElementById("#conteudoAnotacao").value
 
-        // máximo de 100 cliques
-        let porcentagem = Math.min((clicks/cliquesParaCompletar)*100, 100);
+        fetch("/anotacoes/cadastrar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
 
-        document.getElementById("imagem").style.clipPath =
-            `inset(${100 - porcentagem}% 0 0 0)`;
+            body: JSON.stringify({
+                tituloAnotacaoServer: tituloAnotacao,
+                categoriaAnotacaoServer: categoriaAnotacao,
+                tecnologiaAnotacaoServer: tecnologiaAnotacao,
+                conteudoAnotacaoServer: conteudoAnotacao
+            })
+
+        })
+
+            .then(function (resposta) {
+
+                if (resposta.ok) {
+
+                    console.log(resposta);
+
+
+                    resposta.json().then(json => {
+
+                        console.log(json);
+
+                        console.log(
+                            JSON.stringify(json)
+                        );
+                        setTimeout(function () {
+
+                            window.location =
+                                "./aplicacao.html";
+
+                        }, 1000);
+
+                    });
+
+                }
+
+                else {
+
+                    console.log(
+                        "Houve um erro ao tentar realizar o login!"
+                    );
+
+
+                    resposta.text().then(texto => {
+
+                        console.error(texto);
+
+                        alert("Usuário ou senha inválidos");
+
+                        finalizarCarregandoLogin();
+
+                    });
+
+                }
+
+            })
+
+
+            .catch(function (erro) {
+
+                console.log(
+                    "Erro na requisição:",
+                    erro
+                );
+
+                alert(
+                    "Não foi possível conectar ao servidor."
+                );
+
+                finalizarCarregandoLogin();
+
+            });
     }
 
-    
+    function fecharModalAnotacao() {
+        const modal = document.getElementById("modalAnotacao");
+
+        modal.close();
+    }
+
+    function editarAnotacao(idAnotacao) {
+        const modal = document.getElementById("modalAnotacao");
+        const tituloModal = document.getElementById("tituloModal");
+
+        tituloModal.innerText = "Editar anotação";
+
+        modal.showModal();
+    }
+
+    function excluirAnotacao(idAnotacao) {
+        const modal = document.getElementById("modalAnotacao");
+        const tituloModal = document.getElementById("tituloModal");
+
+        tituloModal.innerText = "Editar anotação";
+
+        modal.showModal();
+    }
+
 </script>
