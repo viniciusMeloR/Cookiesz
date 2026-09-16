@@ -7,7 +7,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="./style/style.css">
 
     <title>Maple Storage | Minhas Anotações</title>
 
@@ -50,7 +50,7 @@
 
             <span id="nomeUsuario" class="usuario-logado">
 
-                Usuário
+                `${nomeUsuario}`
 
             </span>
 
@@ -444,6 +444,11 @@
 
 
     </dialog>
+    <dialog id="modalExcluir">
+       <h1>Deseja excluir essa anotação?</h1>
+        <button onclick="excluirAnotacao()">SIM</button>
+        <button onclick="fecharModalExcluir()">NÃO</button>
+    </dialog>
 
 </body>
 
@@ -452,6 +457,7 @@
 <script>
     let modoModal = "criar";
     let idAnotacaoEditando = null;
+    let nomeUsuario = sessionStorage.NOME_USUARIO;
 
 
     // Quando a página carregar
@@ -465,8 +471,9 @@
     // ======================================================
 
     function buscarAnotacoes() {
+        let idUsuario = sessionStorage.ID_USUARIO;
 
-        fetch("/anotacoes/buscarTodas")
+        fetch(`/anotacoes/buscarTodas/${idUsuario}`)
             .then(function (resposta) {
 
                 if (resposta.ok) {
@@ -533,7 +540,7 @@
                 <div class="card-topo">
 
                     <span class="categoria">
-                        ${anotacao.categoria}
+                        ${anotacao.categoriaAnotacao}
                     </span>
 
 
@@ -558,19 +565,19 @@
 
 
                 <h3>
-                    ${anotacao.titulo}
+                    ${anotacao.tituloAnotacao}
                 </h3>
 
 
                 <p class="descricao">
-                    ${anotacao.conteudo}
+                    ${anotacao.conteudoAnotacao}
                 </p>
 
 
                 <div class="card-rodape">
 
                     <span>
-                        ${anotacao.tecnologia}
+                        ${anotacao.tecnologiaAnotacao}
                     </span>
 
                 </div>
@@ -646,26 +653,26 @@
 
             })
 
-            .then(function (anotacao) {
-
+            .then(function (resultado) {
+                let anotacao = resultado[0];
                 console.log("Anotação encontrada:", anotacao);
-
+                
 
                 // Coloca os dados da anotação dentro do modal
                 document.getElementById("tituloAnotacao").value =
-                    anotacao.titulo;
+                    anotacao.tituloAnotacao;
 
 
                 document.getElementById("categoriaAnotacao").value =
-                    anotacao.categoria;
+                    anotacao.categoriaAnotacao;
 
 
                 document.getElementById("tecnologiaAnotacao").value =
-                    anotacao.tecnologia;
+                    anotacao.tecnologiaAnotacao;
 
 
                 document.getElementById("conteudoAnotacao").value =
-                    anotacao.conteudo;
+                    anotacao.conteudoAnotacao;
 
 
                 // Depois de preencher os campos, abre o modal
@@ -708,6 +715,8 @@
     function cadastrarAnotacao() {
 
         // Pega os valores dos inputs
+        let idUsuario = sessionStorage.ID_USUARIO;
+
         let tituloAnotacao =
             document.getElementById("tituloAnotacao").value;
 
@@ -745,8 +754,9 @@
                     tecnologiaAnotacao,
 
                 conteudoAnotacaoServer:
-                    conteudoAnotacao
+                    conteudoAnotacao,
 
+                idUsuarioServer:idUsuario
             })
 
         })
@@ -793,6 +803,7 @@
     function editarAnotacao() {
 
         // Pega os valores dos inputs
+        let idUsuario = sessionStorage.ID_USUARIO;
         let tituloAnotacao =
             document.getElementById("tituloAnotacao").value;
 
@@ -810,7 +821,7 @@
 
 
         // Envia os dados para o backend
-        fetch("/anotacoes/editar", {
+        fetch(`/anotacoes/editar/${idAnotacaoEditando}`, {
 
             method: "PUT",
 
@@ -820,8 +831,7 @@
 
             body: JSON.stringify({
 
-                idAnotacaoServer:
-                    idAnotacaoEditando,
+                idUsuarioServer: idUsuario,
 
                 tituloAnotacaoServer:
                     tituloAnotacao,
@@ -884,28 +894,57 @@
             .getElementById("modalAnotacao")
             .close();
     }
-
-
-    // ======================================================
-    // EXCLUIR ANOTAÇÃO
-    // ======================================================
-
+function abrirModalExcluir(){
+    document.getElementById("modalExcluir").open()
+}
+function fecharModalExcluir{
+    document.getElementById("modalExcluir").close()
+}
     function excluirAnotacao(idAnotacao) {
+        abrirModalExcluir();
+      let idUsuario = sessionStorage.ID_USUARIO;
+        fetch(`/anotacoes/deletar/${idAnotacao}`, {
 
-        console.log(
-            "ID da anotação que será excluída:",
-            idAnotacao
-        );
+            method: "DELETE",
 
+            headers: {
+                "Content-Type": "application/json"
+            },
 
-        // DELETE será implementado depois
+            body: JSON.stringify({
+                idUsuarioServer: idUsuario,
+            })
+
+        })
+
+            .then(function (resposta) {
+
+                if (resposta.ok) {
+                    return resposta.json();
+                }
+
+                throw new Error("Erro ao excluir anotação");
+
+            })
+
+            .then(function (resultado) {
+
+                console.log(
+                    "Anotação excluida:",
+                    resultado
+                );
+                buscarAnotacoes();
+
+            })
+
+            .catch(function (erro) {
+
+                console.log("Erro:", erro);
+
+            });
+
 
     }
-
-
-    // ======================================================
-    // SAIR
-    // ======================================================
 
     function sair() {
 

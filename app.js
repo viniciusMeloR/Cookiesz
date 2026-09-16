@@ -1,5 +1,5 @@
-var ambiente_processo = 'producao';
-//var ambiente_processo = 'desenvolvimento';
+//var ambiente_processo = 'producao';
+var ambiente_processo = 'desenvolvimento';
 
 var caminho_env = ambiente_processo === 'producao' ? '.env' : '.env.dev';
 
@@ -14,8 +14,8 @@ var HOST_APP = process.env.APP_HOST;
 var app = express();
 
 var indexRouter = require("./src/routes/index");
-var usuarioRouter = require("./src/routes/usuarios");
-var quizRouter = require("./src/routes/quiz");
+var usuarioRouter = require("./src/routes/usuario");
+var anotacoesRouter = require("./src/routes/anotacoes");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -24,8 +24,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 
 app.use("/", indexRouter);
-app.use("/usuarios", usuarioRouter);
-app.use("/quiz", quizRouter);
+app.use("/usuario", usuarioRouter);
+app.use("/anotacoes", anotacoesRouter);
 
 app.listen(PORTA_APP, function () {
     console.log(`                                                                                                

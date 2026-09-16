@@ -1,7 +1,8 @@
 let usuarioModel = require("../models/usuarioModel");
 
 function cadastrar(req, res) {
-    var usuario = req.body.nomeServer;
+    console.log("BODY RECEBIDO:", req.body);
+    var usuario = req.body.usuarioServer;
     var senha = req.body.senhaServer;
 
     if (usuario == undefined) {
@@ -59,8 +60,8 @@ function autenticar(req, res) {
                     if (resultadoAutenticar.length == 1) {
                         console.log(resultadoAutenticar);
                         res.json({
-                            id: resultadoAutenticar[0].idUsuario,
-                            senha: resultadoAutenticar[0].senha,
+                            idUsuario: resultadoAutenticar[0].idUsuario,
+                            usuario: resultadoAutenticar[0].usuario,
                         });
                     } else if (resultadoAutenticar.length == 0) {
                         res.status(403).send("Usuario e/ou senha inválido(s)");

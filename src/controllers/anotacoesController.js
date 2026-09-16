@@ -1,8 +1,11 @@
+let anotacoesModel = require("../models/anotacoesModel");
+
 function cadastrar(req, res) {
     let tituloAnotacao = req.body.tituloAnotacaoServer;
     let categoriaAnotacao = req.body.categoriaAnotacaoServer;
     let tecnologiaAnotacao = req.body.tecnologiaAnotacaoServer;
     let conteudoAnotacao = req.body.conteudoAnotacaoServer;
+    let idUsuario = req.body.idUsuarioServer
     if (tituloAnotacao == undefined || categoriaAnotacao == undefined
         || tecnologiaAnotacao == undefined || conteudoAnotacao == undefined) {
         res.status(400).send(
@@ -10,7 +13,7 @@ function cadastrar(req, res) {
         );
     }
     else {
-        anotacoesModel.cadastrar(tituloAnotacao, categoriaAnotacao, tecnologiaAnotacao, conteudoAnotacao)
+        anotacoesModel.cadastrar(tituloAnotacao, categoriaAnotacao, tecnologiaAnotacao, conteudoAnotacao, idUsuario)
             .then(resultado => {
                 res.json(resultado);
             })
@@ -22,7 +25,10 @@ function cadastrar(req, res) {
 }
 
 function buscar(req, res) {
+    let idAnotacao = req.params.idAnotacao
     anotacoesModel.buscar(idAnotacao)
+
+    
         .then(function (resultado) {
             res.json(resultado);
         })
@@ -33,8 +39,39 @@ function buscar(req, res) {
 }
 
 function buscarTodas(req, res) {
-    anotacoesModel.buscarTodas()
+    let idUsuario = req.params.idUsuario    
+    anotacoesModel.buscarTodas(idUsuario)
         .then(function (resultado) {
+            res.json(resultado);
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
+function editar(req, res) {
+    let tituloAnotacao = req.body.tituloAnotacaoServer;
+    let categoriaAnotacao = req.body.categoriaAnotacaoServer;
+    let tecnologiaAnotacao = req.body.tecnologiaAnotacaoServer;
+    let conteudoAnotacao = req.body.conteudoAnotacaoServer;
+    let idAnotacao = req.params.idAnotacao
+    let idUsuario = req.body.idUsuarioServer
+    anotacoesModel.editar(tituloAnotacao, categoriaAnotacao, tecnologiaAnotacao, conteudoAnotacao, idAnotacao, idUsuario)
+        .then(function (resultado) {
+            res.json(resultado);
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
+function excluir(req,res){
+    let idAnotacao = req.params.idAnotacao
+    let idUsuario = req.body.idUsuarioServer
+    anotacoesModel.excluir(idAnotacao, idUsuario)
+     .then(function (resultado) {
             res.json(resultado);
         })
         .catch(function (erro) {
@@ -46,5 +83,7 @@ function buscarTodas(req, res) {
 module.exports = {
     cadastrar,
     buscar,
-    buscarTodas
+    buscarTodas,
+    editar,
+    excluir
 }

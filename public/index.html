@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="./style/style.css">
 
     <title>MapleStory</title>
 </head>
@@ -280,11 +280,6 @@
         </div>
 
     </dialog>
-
-
-    <!-- SEU JAVASCRIPT -->
-    <script src="../js/script.js"></script>
-
 </body>
 
 </html>
@@ -501,7 +496,7 @@
 
 
 
-        fetch("usuario/cadastrar", {
+        fetch("/usuario/cadastrar", {
 
             method: "POST",
 
@@ -513,8 +508,8 @@
 
             body: JSON.stringify({
 
-                usuario: cadastroNome,
-                senha: cadastroSenha
+                usuarioServer: cadastroNome,
+                senhaServer: cadastroSenha
 
             })
 
@@ -531,7 +526,9 @@
                 }
 
                 else {
-
+                     console.log("ENTROU NO ELSE!");
+                    console.log("Status do erro:", resposta.status);
+                    return resposta.text();
                     alert("Falha no cadastro");
 
                     finalizarCarregandoCadastro();
@@ -622,6 +619,8 @@
 
                         sessionStorage.NOME_USUARIO =
                             json.usuario;
+                            sessionStorage.ID_USUARIO =
+                            json.idUsuario;
 
 
                         setTimeout(function () {
