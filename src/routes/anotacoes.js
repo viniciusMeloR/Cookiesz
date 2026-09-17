@@ -17,7 +17,7 @@ router.get("/buscarTodas/:idUsuario", function (req,res){
 router.put("/editar/:idAnotacao", function (req,res){
     anotacoesController.editar(req, res);
 });
-router.delete("/deletar/:idAnotacao", function (req,res){
+router.delete("/deletar/:idAnotacaoExcluir", function (req,res){
     anotacoesController.excluir(req,res);
 });
 

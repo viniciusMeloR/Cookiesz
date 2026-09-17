@@ -1398,3 +1398,15 @@ dialog[open] {
     }
 
 }
+
+#modalExcluir{
+    
+    align-items: center;
+    text-align: center;
+    color: wheat;
+    
+}
+.conteudo-modal-excluir{
+    flex-direction: column;
+    display: flex;
+}

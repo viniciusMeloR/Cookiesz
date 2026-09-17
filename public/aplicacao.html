@@ -50,8 +50,6 @@
 
             <span id="nomeUsuario" class="usuario-logado">
 
-                `${nomeUsuario}`
-
             </span>
 
 
@@ -162,14 +160,15 @@
                     </span>
 
 
-                    <input type="text" id="inputPesquisa" placeholder="Pesquisar anotação...">
+                    <input type="text" id="inputPesquisa" placeholder="Pesquisar anotação..."
+                     oninput="filtrarAnotacoes()">
 
 
                 </div>
 
 
 
-                <select id="filtroCategoria">
+                <select id="filtroCategoria" onchange="filtrarAnotacoes()">
 
 
                     <option value="">
@@ -208,39 +207,10 @@
             </div>
 
 
-
-            <!-- =============================================
-                 CARDS DINÂMICOS
-            ============================================== -->
-
             <div id="containerAnotacoes" class="anotacoes">
-
-
-                <!--
-
-                    NÃO COLOQUE CARDS MANUALMENTE AQUI.
-
-                    O JavaScript irá criar:
-
-                    <div class="card-anotacao">
-
-                        ...
-
-                    </div>
-
-                    para cada registro encontrado
-                    no banco de dados.
-
-                -->
-
-
             </div>
 
 
-
-            <!-- =============================================
-                 ESTADO VAZIO
-            ============================================== -->
 
             <div id="semAnotacoes" class="sem-anotacoes" style="display: none;">
 
@@ -445,9 +415,11 @@
 
     </dialog>
     <dialog id="modalExcluir">
-       <h1>Deseja excluir essa anotação?</h1>
-        <button onclick="excluirAnotacao()">SIM</button>
-        <button onclick="fecharModalExcluir()">NÃO</button>
+        <div class="conteudo-modal-excluir">
+        <h1>Deseja excluir essa anotação?</h1>
+        <button class ="botao-modal" onclick="excluirAnotacao()">SIM</button>
+        <button class ="botao-modal" onclick="fecharModalExcluir()">NÃO</button>
+        </div>
     </dialog>
 
 </body>
@@ -455,9 +427,13 @@
 </html>
 
 <script>
+    let listaAnotacoes = [];
     let modoModal = "criar";
     let idAnotacaoEditando = null;
+    let idAnotacaoExcluir = null;
+    let nome = document.getElementById("nomeUsuario")
     let nomeUsuario = sessionStorage.NOME_USUARIO;
+    nome.innerHTML = `${nomeUsuario}`
 
 
     // Quando a página carregar
@@ -466,9 +442,39 @@
     };
 
 
-    // ======================================================
-    // BUSCAR TODAS AS ANOTAÇÕES
-    // ======================================================
+    function filtrarAnotacoes() {
+
+    let textoPesquisa =
+        document.getElementById("inputPesquisa").value.toLowerCase();
+
+    let categoriaSelecionada =
+        document.getElementById("filtroCategoria").value;
+
+    let resultado = listaAnotacoes.filter(function (anotacao) {
+
+        let correspondePesquisa =
+            anotacao.tituloAnotacao
+                .toLowerCase()
+                .includes(textoPesquisa) ||
+
+            anotacao.conteudoAnotacao
+                .toLowerCase()
+                .includes(textoPesquisa) ||
+
+            anotacao.tecnologiaAnotacao
+                .toLowerCase()
+                .includes(textoPesquisa);
+
+        let correspondeCategoria =
+            categoriaSelecionada === "" ||
+            anotacao.categoriaAnotacao === categoriaSelecionada;
+
+        return correspondePesquisa && correspondeCategoria;
+
+    });
+
+    criarCards(resultado);
+}
 
     function buscarAnotacoes() {
         let idUsuario = sessionStorage.ID_USUARIO;
@@ -486,7 +492,7 @@
             .then(function (anotacoes) {
 
                 console.log("Anotações recebidas:", anotacoes);
-
+                listaAnotacoes = anotacoes;
                 criarCards(anotacoes);
 
             })
@@ -553,10 +559,9 @@
                         </button>
 
 
-                        <button
-                            class="botao-excluir"
-                            onclick="excluirAnotacao(${anotacao.idAnotacao})">
-                            🗑️
+                       <button class="botao-excluir"
+                            onclick="abrirModalExcluir(${anotacao.idAnotacao})">
+                                 🗑️
                         </button>
 
                     </div>
@@ -656,7 +661,7 @@
             .then(function (resultado) {
                 let anotacao = resultado[0];
                 console.log("Anotação encontrada:", anotacao);
-                
+
 
                 // Coloca os dados da anotação dentro do modal
                 document.getElementById("tituloAnotacao").value =
@@ -756,7 +761,7 @@
                 conteudoAnotacaoServer:
                     conteudoAnotacao,
 
-                idUsuarioServer:idUsuario
+                idUsuarioServer: idUsuario
             })
 
         })
@@ -894,16 +899,19 @@
             .getElementById("modalAnotacao")
             .close();
     }
-function abrirModalExcluir(){
-    document.getElementById("modalExcluir").open()
-}
-function fecharModalExcluir{
-    document.getElementById("modalExcluir").close()
-}
-    function excluirAnotacao(idAnotacao) {
-        abrirModalExcluir();
-      let idUsuario = sessionStorage.ID_USUARIO;
-        fetch(`/anotacoes/deletar/${idAnotacao}`, {
+    function abrirModalExcluir(idAnotacao) {
+
+        idAnotacaoExcluir = idAnotacao;
+        document.getElementById("modalExcluir").showModal();
+    }
+    function fecharModalExcluir() {
+        document.getElementById("modalExcluir").close();
+
+        idAnotacaoExcluir = null;
+    }
+    function excluirAnotacao() {
+        let idUsuario = sessionStorage.ID_USUARIO;
+        fetch(`/anotacoes/deletar/${idAnotacaoExcluir}`, {
 
             method: "DELETE",
 
@@ -933,6 +941,9 @@ function fecharModalExcluir{
                     "Anotação excluida:",
                     resultado
                 );
+                  fecharModalExcluir();
+
+                idAnotacaoExcluir = null;
                 buscarAnotacoes();
 
             })

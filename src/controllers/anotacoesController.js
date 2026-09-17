@@ -68,7 +68,7 @@ function editar(req, res) {
 }
 
 function excluir(req,res){
-    let idAnotacao = req.params.idAnotacao
+    let idAnotacao = req.params.idAnotacaoExcluir
     let idUsuario = req.body.idUsuarioServer
     anotacoesModel.excluir(idAnotacao, idUsuario)
      .then(function (resultado) {
