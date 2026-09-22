@@ -1,0 +1,238 @@
+# =========================================================
+# CLOUDWATCH - MAPLE STORAGE
+# =========================================================
+
+
+# =========================================================
+# LOG GROUP - EC2
+# =========================================================
+
+resource "aws_cloudwatch_log_group" "ec2" {
+  name              = "/maple-storage/ec2"
+  retention_in_days = 7
+
+  tags = {
+    Name        = "MapleStorage-EC2-Logs"
+    Environment = "producao"
+  }
+}
+
+
+# =========================================================
+# LOG GROUP - LAMBDA
+# =========================================================
+
+resource "aws_cloudwatch_log_group" "lambda" {
+  name              = "/aws/lambda/${aws_lambda_function.criar_tabelas.function_name}"
+  retention_in_days = 7
+
+  tags = {
+    Name        = "MapleStorage-Lambda-Logs"
+    Environment = "producao"
+  }
+}
+
+
+# =========================================================
+# EC2 - CPU
+# =========================================================
+
+resource "aws_cloudwatch_metric_alarm" "ec2_cpu" {
+  alarm_name          = "maple-storage-ec2-cpu-alta"
+  alarm_description   = "CPU da EC2 acima de 80%"
+  comparison_operator = "GreaterThanThreshold"
+
+  evaluation_periods = 2
+  metric_name        = "CPUUtilization"
+  namespace          = "AWS/EC2"
+
+  period    = 300
+  statistic = "Average"
+  threshold = 80
+
+  dimensions = {
+    InstanceId = aws_instance.instancia.id
+  }
+
+  treat_missing_data = "notBreaching"
+
+  tags = {
+    Name        = "MapleStorage-EC2-CPU"
+    Environment = "producao"
+  }
+}
+
+
+# =========================================================
+# EC2 - STATUS DA INSTÂNCIA
+# =========================================================
+
+resource "aws_cloudwatch_metric_alarm" "ec2_status" {
+  alarm_name          = "maple-storage-ec2-status"
+  alarm_description   = "A EC2 apresentou falha de status"
+  comparison_operator = "GreaterThanThreshold"
+
+  evaluation_periods = 2
+  metric_name        = "StatusCheckFailed"
+  namespace          = "AWS/EC2"
+
+  period    = 60
+  statistic = "Maximum"
+  threshold = 0
+
+  dimensions = {
+    InstanceId = aws_instance.instancia.id
+  }
+
+  treat_missing_data = "breaching"
+
+  tags = {
+    Name        = "MapleStorage-EC2-Status"
+    Environment = "producao"
+  }
+}
+
+
+# =========================================================
+# RDS - CPU
+# =========================================================
+
+resource "aws_cloudwatch_metric_alarm" "rds_cpu" {
+  alarm_name          = "maple-storage-rds-cpu-alta"
+  alarm_description   = "CPU do RDS acima de 80%"
+  comparison_operator = "GreaterThanThreshold"
+
+  evaluation_periods = 2
+  metric_name        = "CPUUtilization"
+  namespace          = "AWS/RDS"
+
+  period    = 300
+  statistic = "Average"
+  threshold = 80
+
+  dimensions = {
+    DBInstanceIdentifier = aws_db_instance.rds_db.id
+  }
+
+  treat_missing_data = "notBreaching"
+
+  tags = {
+    Name        = "MapleStorage-RDS-CPU"
+    Environment = "producao"
+  }
+}
+
+
+# =========================================================
+# RDS - ESPAÇO LIVRE
+# =========================================================
+
+resource "aws_cloudwatch_metric_alarm" "rds_storage" {
+  alarm_name          = "maple-storage-rds-storage-baixo"
+  alarm_description   = "Espaco livre do RDS abaixo de 2 GB"
+  comparison_operator = "LessThanThreshold"
+
+  evaluation_periods = 2
+  metric_name        = "FreeStorageSpace"
+  namespace          = "AWS/RDS"
+
+  period    = 300
+  statistic = "Average"
+
+  # CloudWatch utiliza bytes
+  # 2 GB = 2147483648 bytes
+  threshold = 2147483648
+
+  dimensions = {
+    DBInstanceIdentifier = aws_db_instance.rds_db.id
+  }
+
+  treat_missing_data = "notBreaching"
+
+  tags = {
+    Name        = "MapleStorage-RDS-Storage"
+    Environment = "producao"
+  }
+}
+
+
+# =========================================================
+# RDS - CONEXÕES
+# =========================================================
+
+resource "aws_cloudwatch_metric_alarm" "rds_connections" {
+  alarm_name          = "maple-storage-rds-conexoes-altas"
+  alarm_description   = "Quantidade de conexoes do RDS acima de 80"
+  comparison_operator = "GreaterThanThreshold"
+
+  evaluation_periods = 2
+  metric_name        = "DatabaseConnections"
+  namespace          = "AWS/RDS"
+
+  period    = 300
+  statistic = "Average"
+  threshold = 80
+
+  dimensions = {
+    DBInstanceIdentifier = aws_db_instance.rds_db.id
+  }
+
+  treat_missing_data = "notBreaching"
+
+  tags = {
+    Name        = "MapleStorage-RDS-Connections"
+    Environment = "producao"
+  }
+}
+
+
+# =========================================================
+# IAM ROLE - CLOUDWATCH AGENT DA EC2
+# =========================================================
+
+resource "aws_iam_role" "ec2_cloudwatch_agent" {
+  name = "maple-storage-ec2-cloudwatch-agent"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+
+    Statement = [
+      {
+        Effect = "Allow"
+
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+
+  tags = {
+    Name        = "MapleStorage-EC2-CloudWatch-Agent"
+    Environment = "producao"
+  }
+}
+
+
+# =========================================================
+# POLICY - CLOUDWATCH AGENT
+# =========================================================
+
+resource "aws_iam_role_policy_attachment" "ec2_cloudwatch_agent" {
+  role = aws_iam_role.ec2_cloudwatch_agent.name
+
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+}
+
+
+# =========================================================
+# INSTANCE PROFILE
+# =========================================================
+
+resource "aws_iam_instance_profile" "ec2_cloudwatch_agent" {
+  name = "maple-storage-ec2-cloudwatch-agent"
+
+  role = aws_iam_role.ec2_cloudwatch_agent.name
+}

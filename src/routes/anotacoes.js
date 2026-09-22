@@ -1,7 +1,7 @@
 let express = require("express");
 let router = express.Router();
 let anotacoesController = require("../controllers/anotacoesController");
-const e = require("express");
+
 
 router.post("/cadastrar", function (req,res){
     anotacoesController.cadastrar(req, res);
