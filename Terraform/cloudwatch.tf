@@ -1,11 +1,3 @@
-# =========================================================
-# CLOUDWATCH - MAPLE STORAGE
-# =========================================================
-
-
-# =========================================================
-# LOG GROUP - EC2
-# =========================================================
 
 resource "aws_cloudwatch_log_group" "ec2" {
   name              = "/maple-storage/ec2"
@@ -18,10 +10,6 @@ resource "aws_cloudwatch_log_group" "ec2" {
 }
 
 
-# =========================================================
-# LOG GROUP - LAMBDA
-# =========================================================
-
 resource "aws_cloudwatch_log_group" "lambda" {
   name              = "/aws/lambda/${aws_lambda_function.criar_tabelas.function_name}"
   retention_in_days = 7
@@ -32,10 +20,6 @@ resource "aws_cloudwatch_log_group" "lambda" {
   }
 }
 
-
-# =========================================================
-# EC2 - CPU
-# =========================================================
 
 resource "aws_cloudwatch_metric_alarm" "ec2_cpu" {
   alarm_name          = "maple-storage-ec2-cpu-alta"
@@ -63,10 +47,6 @@ resource "aws_cloudwatch_metric_alarm" "ec2_cpu" {
 }
 
 
-# =========================================================
-# EC2 - STATUS DA INSTÂNCIA
-# =========================================================
-
 resource "aws_cloudwatch_metric_alarm" "ec2_status" {
   alarm_name          = "maple-storage-ec2-status"
   alarm_description   = "A EC2 apresentou falha de status"
@@ -93,10 +73,6 @@ resource "aws_cloudwatch_metric_alarm" "ec2_status" {
 }
 
 
-# =========================================================
-# RDS - CPU
-# =========================================================
-
 resource "aws_cloudwatch_metric_alarm" "rds_cpu" {
   alarm_name          = "maple-storage-rds-cpu-alta"
   alarm_description   = "CPU do RDS acima de 80%"
@@ -121,11 +97,6 @@ resource "aws_cloudwatch_metric_alarm" "rds_cpu" {
     Environment = "producao"
   }
 }
-
-
-# =========================================================
-# RDS - ESPAÇO LIVRE
-# =========================================================
 
 resource "aws_cloudwatch_metric_alarm" "rds_storage" {
   alarm_name          = "maple-storage-rds-storage-baixo"
@@ -156,10 +127,6 @@ resource "aws_cloudwatch_metric_alarm" "rds_storage" {
 }
 
 
-# =========================================================
-# RDS - CONEXÕES
-# =========================================================
-
 resource "aws_cloudwatch_metric_alarm" "rds_connections" {
   alarm_name          = "maple-storage-rds-conexoes-altas"
   alarm_description   = "Quantidade de conexoes do RDS acima de 80"
@@ -185,54 +152,9 @@ resource "aws_cloudwatch_metric_alarm" "rds_connections" {
   }
 }
 
-
-# =========================================================
-# IAM ROLE - CLOUDWATCH AGENT DA EC2
-# =========================================================
-
-resource "aws_iam_role" "ec2_cloudwatch_agent" {
-  name = "maple-storage-ec2-cloudwatch-agent"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-
-    Statement = [
-      {
-        Effect = "Allow"
-
-        Principal = {
-          Service = "ec2.amazonaws.com"
-        }
-
-        Action = "sts:AssumeRole"
-      }
-    ]
-  })
-
-  tags = {
-    Name        = "MapleStorage-EC2-CloudWatch-Agent"
-    Environment = "producao"
-  }
-}
-
-
-# =========================================================
-# POLICY - CLOUDWATCH AGENT
-# =========================================================
-
 resource "aws_iam_role_policy_attachment" "ec2_cloudwatch_agent" {
-  role = aws_iam_role.ec2_cloudwatch_agent.name
+  role = aws_iam_role.ec2_s3_role.name
 
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
 }
 
-
-# =========================================================
-# INSTANCE PROFILE
-# =========================================================
-
-resource "aws_iam_instance_profile" "ec2_cloudwatch_agent" {
-  name = "maple-storage-ec2-cloudwatch-agent"
-
-  role = aws_iam_role.ec2_cloudwatch_agent.name
-}

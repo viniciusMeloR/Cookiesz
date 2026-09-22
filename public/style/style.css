@@ -37,7 +37,7 @@ body {
 
 .conteudo {
     flex: 1;
-    background-image: url(https://maple-storage-vinicius-123456789.s3.us-east-1.amazonaws.com/assets/background.jpg);
+    background-image: url("../assets/background.jpg");
     background-size: cover;
 }
 
@@ -121,16 +121,14 @@ body {
 .botao-criar,
 .botao-modal {
 
-    border: 3px solid #3b210f;
+    border: 1px solid #261e18;
 
     border-radius: 8px;
 
     background:
         linear-gradient(
             180deg,
-            #c66a20 0%,
-            #a94d0d 45%,
-            #823508 100%
+           #8f8175 0%, #6d503c 45%, #000000 100%
         );
 
     color: #fff1c9;
@@ -141,11 +139,6 @@ body {
         1px 1px 0 #542205;
 
     cursor: pointer;
-
-    box-shadow:
-        inset 0 2px 0 rgba(255, 220, 130, 0.35),
-        inset 0 -3px 0 rgba(55, 22, 5, 0.35),
-        0 4px 0 #30190b;
 
     transition:
         transform 0.15s,
@@ -164,10 +157,6 @@ body {
 
     transform: translateY(-2px);
 
-    box-shadow:
-        inset 0 2px 0 rgba(255, 230, 150, 0.45),
-        inset 0 -3px 0 rgba(55, 22, 5, 0.35),
-        0 6px 0 #30190b;
 }
 
 .botao-header:active,
@@ -224,7 +213,7 @@ body {
 
     background: #7f240f;
 
-    border: 2px solid #e0b84c;
+    border: 1px solid #e0b84c;
 
     color: #ffe9a8;
 
@@ -295,12 +284,12 @@ body {
 
     border-radius: 15px;
 
-    border: 5px solid #70451f;
+    border: 1px solid #000000;
 
     background: #315d32;
 
     box-shadow:
-        0 8px 0 #26150b,
+        0 8px 0 #181311,
         0 15px 35px rgba(0, 0, 0, 0.45);
 }
 
@@ -395,11 +384,11 @@ body {
     background:
         linear-gradient(
             180deg,
-            #d36c1d,
-            #963608
+             #352929,
+            #080807
         );
 
-    border: 2px solid #e0b84c;
+    border: 2px solid #22201a;
 
     color: #fff1c9;
 
@@ -407,8 +396,6 @@ body {
 
     font-weight: bold;
 
-    box-shadow:
-        0 3px 0 #3d1b09;
 }
 
 
@@ -431,13 +418,13 @@ body {
 
     border-radius: 8px;
 
-    border: 3px solid #3b210f;
+    border: 1px solid #020202;
 
     background:
         linear-gradient(
             180deg,
-            #c66a20,
-            #863608
+            #352929,
+            #080807
         );
 
     color: #ffe9a8;
@@ -447,9 +434,6 @@ body {
     font-weight: bold;
 
     cursor: pointer;
-
-    box-shadow:
-        0 4px 0 #30190b;
 
     transition: 0.15s;
 }
@@ -580,7 +564,7 @@ body {
             rgba(55, 33, 17, 0.97)
         );
 
-    border: 4px solid #8b6033;
+    border: 1px solid #8b6033;
 
     border-radius: 15px;
 
@@ -652,7 +636,7 @@ body {
 
     padding: 0 15px;
 
-    border: 3px solid #79512b;
+    border: 1px solid #79512b;
 
     border-radius: 8px;
 
@@ -687,7 +671,7 @@ body {
 
     padding: 13px;
 
-    border: 3px solid #79512b;
+    border: 1px solid #79512b;
 
     border-radius: 8px;
 
