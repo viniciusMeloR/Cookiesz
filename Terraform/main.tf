@@ -4,7 +4,7 @@ resource "aws_instance" "instancia" {
     instance_type = "t3.micro"
     subnet_id = aws_subnet.publica.id
     tags = {
-        name = "Projeto-ViniciusDeMeloRodrigues"
+        name = "Vinicius-mapleStorage"
     }
     
       user_data = templatefile("${path.module}/scripts/install.sh", {
@@ -15,9 +15,9 @@ resource "aws_instance" "instancia" {
 
     rds_database = "mapleStorage"
 
-    rds_username = "foo"
+    rds_username = "admin"
 
-    rds_password = "foobarbaz"
+    rds_password = "var.db_senha"
 
   })
   iam_instance_profile = aws_iam_instance_profile.ec2_cloudwatch_agent.name
@@ -41,7 +41,7 @@ resource "aws_db_instance" "rds_db" {
   vpc_security_group_ids = [aws_security_group.SGPriv.id]
   
   tags = {
-    name = "mapleStorageRds"
+    name = "Vinicius mapleStorageRds"
   }
 }
 
@@ -52,7 +52,7 @@ resource "aws_db_subnet_group" "rds_subredes" {
         aws_subnet.privada2.id
     ]
     tags = {
-      Name = "MapleStory RDS grupo subredes"
+      Name = "Vinicius MapleStory RDS grupo subredes"
     }
   
 }
@@ -72,7 +72,7 @@ resource "aws_security_group" "lambda_sg" {
   }
 
   tags = {
-    Name = "MapleStorage-Lambda-SG"
+    Name = "Vinicius MapleStorage-Lambda-SG"
   }
 }
 #Meu security Group
@@ -165,14 +165,14 @@ ingress {
 resource "aws_vpc" "main"{
     cidr_block = "10.0.0.0/16"
     tags = {
-        name = "Main"    
+        name = "Vinicius maplestorageMain"    
     }
 }
 #Criação do meu gateway de acesso a internet
 resource "aws_internet_gateway" "mainGateway"{
         vpc_id = aws_vpc.main.id
     tags = {
-        Name = "mainGateway"
+        Name = "Vinicius mapleStorageMainGateway"
     }
 }
 
@@ -185,14 +185,14 @@ resource "aws_route_table" "route_table_publica"{
         gateway_id = aws_internet_gateway.mainGateway.id
     }
     tags = {
-        Name = "routeTablePublic"
+        Name = "Vinicius mapleStorageRouteTablePublica"
     }
 }
 
 resource "aws_route_table" "route_table_privada" {
     vpc_id = aws_vpc.main.id
     tags = {
-      Name = "routeTablePriv"
+      Name = "Vinicius mapleStorageRouteTablePriv"
     }
 
 }
@@ -200,6 +200,9 @@ resource "aws_route_table" "route_table_privada" {
 resource "aws_subnet" "publica"{
     cidr_block = "10.0.1.0/24"
     vpc_id = aws_vpc.main.id
+    tags = {
+      Name = "Vinicius mapleStorageSubRedePub"
+    }
 }
 #Associa a minha subrede a uma rota criada no route table
 #Obs:A subnet irá usar todas as rotas da route table, mas irá associar a
@@ -214,11 +217,18 @@ resource "aws_subnet" "privada"{
     cidr_block = "10.0.2.0/24"
     vpc_id = aws_vpc.main.id
     availability_zone = "us-east-1a"
+    tags = {
+      Name = "Vinicius mapleStorageSubRedePriv"
+    }
 }
 resource "aws_subnet" "privada2"{
     cidr_block = "10.0.3.0/24"
     vpc_id = aws_vpc.main.id
     availability_zone = "us-east-1b"
+
+    tags = {
+      Name = "Vinicius mapleStorageSubRedePriv2"
+    }
 }
 resource "aws_route_table_association" "associationPrivada" {
     subnet_id = aws_subnet.privada.id

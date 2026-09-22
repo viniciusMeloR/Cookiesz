@@ -1,13 +1,13 @@
 
 node_modules/
 .env
-.env.dev
+.env.*
+!.env.example
 .terraform/
 *.tfstate
 *.tfstate.*
-*.tfplan
-crash.log
-crash.*.log
 *.tfvars
 *.tfvars.json
+*.tfplan
+*.log
 terraform/lambda.zip

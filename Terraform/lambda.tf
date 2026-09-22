@@ -120,9 +120,9 @@ resource "aws_lambda_function" "criar_tabelas" {
 
       DB_DATABASE = "mapleStorage"
 
-      DB_USER = "foo"
+      DB_USER = "admin"
 
-      DB_PASSWORD = "foobarbaz"
+      DB_PASSWORD = "var.db_senha"
 
       DB_PORT = "3306"
     }
@@ -140,7 +140,7 @@ resource "aws_lambda_function" "criar_tabelas" {
 
   tags = {
 
-    Name = "MapleStorage-Criar-Tabelas"
+    Name = "Vinicius MapleStorage-Criar-Tabelas"
 
   }
 }

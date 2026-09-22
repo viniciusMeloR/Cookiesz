@@ -7,7 +7,7 @@ resource "aws_s3_bucket" "maple_storage" {
   bucket = "maple-storage-vinicius-${data.aws_caller_identity.current.account_id}"
 
   tags = {
-    Name        = "Maple Storage Images"
+    Name        = "Vinicius mapleStorage"
     Environment = "producao"
   }
 }
