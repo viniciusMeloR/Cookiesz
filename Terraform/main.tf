@@ -2,6 +2,7 @@
 resource "aws_instance" "instancia" {
   ami           = "ami-01c265752adadcdf8"
   instance_type = "t3.micro"
+  associate_public_ip_address = true
   subnet_id     = aws_subnet.publica.id
   tags = {
     name = "Vinicius-mapleStorage"
@@ -20,14 +21,13 @@ resource "aws_instance" "instancia" {
     rds_password = var.db_senha
 
   })
-  iam_instance_profile = aws_iam_instance_profile.ec2_cloudwatch_agent.name
+  iam_instance_profile   = aws_iam_instance_profile.ec2_cloudwatch_agent.name
   vpc_security_group_ids = [aws_security_group.SG.id]
 }
 
 resource "aws_db_instance" "rds_db" {
-  allocated_storage      = 10
-  max_allocated_storage  = 10
-  storage_type           = "gp2"
+  allocated_storage      = 20
+  storage_type           = "gp3"
   db_name                = "mapleStorage"
   engine                 = "mysql"
   engine_version         = "8.0"
@@ -77,8 +77,8 @@ resource "aws_security_group" "lambda_sg" {
 }
 #Meu security Group
 resource "aws_security_group" "SG" {
-  name        = "AprovarTráfego"
-  description = "Todo o tráfego para a aplicacao"
+  name        = "AprovarTrafego"
+  description = "Todo o trafego para a aplicacao"
   vpc_id      = aws_vpc.main.id
   #liberado para toda a internet na porta 80, HTTP
   ingress {
@@ -131,7 +131,7 @@ resource "aws_security_group" "SG" {
 
 resource "aws_security_group" "SGPriv" {
   name        = "SgPrivada"
-  description = "Sg para o trafégo privado no meu RDS"
+  description = "Sg para o trafego privado no meu RDS"
   vpc_id      = aws_vpc.main.id
 
   ingress {
@@ -200,6 +200,7 @@ resource "aws_route_table" "route_table_privada" {
 resource "aws_subnet" "publica" {
   cidr_block = "10.0.1.0/24"
   vpc_id     = aws_vpc.main.id
+  availability_zone = "us-east-2a"
   tags = {
     Name = "Vinicius mapleStorageSubRedePub"
   }
@@ -216,7 +217,7 @@ resource "aws_route_table_association" "associacaoPublica" {
 resource "aws_subnet" "privada" {
   cidr_block        = "10.0.2.0/24"
   vpc_id            = aws_vpc.main.id
-  availability_zone = "us-east-1a"
+  availability_zone = "us-east-2a"
   tags = {
     Name = "Vinicius mapleStorageSubRedePriv"
   }
@@ -224,7 +225,7 @@ resource "aws_subnet" "privada" {
 resource "aws_subnet" "privada2" {
   cidr_block        = "10.0.3.0/24"
   vpc_id            = aws_vpc.main.id
-  availability_zone = "us-east-1b"
+  availability_zone = "us-east-2b"
 
   tags = {
     Name = "Vinicius mapleStorageSubRedePriv2"

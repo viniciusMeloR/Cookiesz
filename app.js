@@ -1,4 +1,3 @@
-//var ambiente_processo = 'producao';
 var ambiente_processo = process.env.AMBIENTE_PROCESSO || 'desenvolvimento';
 
 var caminho_env = ambiente_processo === 'producao' ? '.env' : '.env.dev';
@@ -8,6 +7,7 @@ require("dotenv").config({ path: caminho_env });
 var express = require("express");
 var cors = require("cors");
 var path = require("path");
+
 var PORTA_APP = process.env.APP_PORT;
 var HOST_APP = process.env.APP_HOST;
 
@@ -27,14 +27,22 @@ app.use("/", indexRouter);
 app.use("/usuario", usuarioRouter);
 app.use("/anotacoes", anotacoesRouter);
 
-app.listen(PORTA_APP, function () {
-    console.log(`                                                                                                
-    Servidor do seu site já está rodando! Acesse o caminho a seguir para visualizar .: http://${HOST_APP}:${PORTA_APP} :. \n\n
-    Você está rodando sua aplicação em ambiente de .:${process.env.AMBIENTE_PROCESSO}:. \n\n
-    \tSe .:desenvolvimento:. você está se conectando ao banco local. \n
-    \tSe .:producao:. você está se conectando ao banco remoto. \n\n
-    \t\tPara alterar o ambiente, comente ou descomente as linhas 1 ou 2 no arquivo 'app.js'\n\n`);
+app.listen(PORTA_APP, HOST_APP, function () {
+    console.log(`
+=========================================
+Servidor do Maple Storage iniciado!
+=========================================
+
+Acesse:
+http://${HOST_APP}:${PORTA_APP}
+
+Ambiente: ${process.env.AMBIENTE_PROCESSO}
+
+Banco:
+${ambiente_processo === 'producao'
+    ? 'RDS (banco remoto)'
+    : 'Banco local'}
+
+=========================================
+`);
 });
-
-
-    

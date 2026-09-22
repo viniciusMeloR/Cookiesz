@@ -10,9 +10,9 @@ echo "========================================="
 # ATUALIZAÇÃO DO SISTEMA
 # =========================================================
 
-apt update -y
+dnf update -y
 
-apt install -y git curl wget unzip
+dnf install -y git curl wget unzip
 
 
 # =========================================================
@@ -21,8 +21,9 @@ apt install -y git curl wget unzip
 
 echo "Instalando Node.js..."
 
-curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
-apt install -y nodejs
+curl -fsSL https://rpm.nodesource.com/setup_22.x | bash -
+
+dnf install -y nodejs
 
 echo "Node.js instalado:"
 node -v
@@ -39,11 +40,11 @@ echo "========================================="
 echo "Instalando CloudWatch Agent"
 echo "========================================="
 
-wget https://amazoncloudwatch-agent.s3.amazonaws.com/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb
+wget https://amazoncloudwatch-agent.s3.amazonaws.com/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm
 
-dpkg -i -E ./amazon-cloudwatch-agent.deb
+rpm -U ./amazon-cloudwatch-agent.rpm
 
-rm amazon-cloudwatch-agent.deb
+rm amazon-cloudwatch-agent.rpm
 
 echo "CloudWatch Agent instalado!"
 
@@ -125,11 +126,11 @@ echo "========================================="
 echo "Clonando projeto"
 echo "========================================="
 
-cd /home/ubuntu
+cd /home/ec2-user
 
 git clone https://github.com/viniciusMeloR/Cookiesz.git
 
-cd /home/ubuntu/Cookiesz
+cd /home/ec2-user/Cookiesz
 
 
 # =========================================================
@@ -155,7 +156,7 @@ EOF
 # PERMISSÕES
 # =========================================================
 
-chown -R ubuntu:ubuntu /home/ubuntu/Cookiesz
+chown -R ec2-user:ec2-user /home/ec2-user/Cookiesz
 
 
 # =========================================================
@@ -164,7 +165,7 @@ chown -R ubuntu:ubuntu /home/ubuntu/Cookiesz
 
 echo "Instalando dependências..."
 
-sudo -u ubuntu npm install
+sudo -u ec2-user npm install
 
 
 # =========================================================
@@ -192,9 +193,9 @@ echo "Instalando PM2..."
 
 npm install -g pm2
 
-sudo -u ubuntu pm2 start app.js --name cookiesz
+sudo -u ec2-user pm2 start app.js --name cookiesz
 
-sudo -u ubuntu pm2 save
+sudo -u ec2-user pm2 save
 
 
 # =========================================================
