@@ -12,7 +12,7 @@ echo "========================================="
 
 dnf update -y
 
-dnf install -y git curl wget unzip
+dnf install -y git wget unzip
 
 
 # =========================================================
@@ -151,7 +151,25 @@ DB_PASSWORD=${rds_password}
 DB_PORT=3306
 EOF
 
+# =========================================================
+# CONFIGURAÇÃO DO PM2
+# =========================================================
 
+cat <<'EOF' > /home/ec2-user/Cookiesz/ecosystem.config.js
+module.exports = {
+  apps: [
+    {
+      name: "cookiesz",
+      script: "./app.js",
+      env: {
+        AMBIENTE_PROCESSO: "producao"
+      }
+    }
+  ]
+};
+EOF
+
+chown ec2-user:ec2-user /home/ec2-user/Cookiesz/ecosystem.config.js
 # =========================================================
 # PERMISSÕES
 # =========================================================
@@ -193,7 +211,7 @@ echo "Instalando PM2..."
 
 npm install -g pm2
 
-sudo -u ec2-user pm2 start app.js --name cookiesz
+sudo -u ec2-user pm2 start /home/ec2-user/Cookiesz/ecosystem.config.js
 
 sudo -u ec2-user pm2 save
 

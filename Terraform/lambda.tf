@@ -122,7 +122,7 @@ resource "aws_lambda_function" "criar_tabelas" {
 
       DB_USER = "admin"
 
-      DB_PASSWORD = "var.db_senha"
+      DB_PASSWORD = var.db_senha
 
       DB_PORT = "3306"
     }

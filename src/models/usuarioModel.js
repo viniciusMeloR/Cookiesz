@@ -10,7 +10,7 @@ function cadastrar(usuario, senha) {
 } 
 
 function buscarPorUsuario(usuario) {
-    var instrucaoSql = `SELECT * FROM usuario WHERE IdUsuario = '${usuario}';`
+    var instrucaoSql = `SELECT * FROM usuario WHERE usuario = '${usuario}';`
     return database.executar(instrucaoSql);
 }
 

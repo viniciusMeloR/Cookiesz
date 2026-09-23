@@ -518,14 +518,15 @@
                 }
 
                 else {
-                     console.log("ENTROU NO ELSE!");
+                    console.log("ENTROU NO ELSE!");
                     console.log("Status do erro:", resposta.status);
-                    return resposta.text();
-                    alert("Falha no cadastro");
+                    return resposta.text().then(function (erro) {
+                        console.log("Erro retornado pelo servidor:", erro);
 
-                    finalizarCarregandoCadastro();
+                        alert("Falha no cadastro: " + erro);
 
-                    return false;
+                        finalizarCarregandoCadastro();
+                    });
 
                 }
 
@@ -611,7 +612,7 @@
 
                         sessionStorage.NOME_USUARIO =
                             json.usuario;
-                            sessionStorage.ID_USUARIO =
+                        sessionStorage.ID_USUARIO =
                             json.idUsuario;
 
 
