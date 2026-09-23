@@ -144,3 +144,21 @@ resource "aws_lambda_function" "criar_tabelas" {
 
   }
 }
+
+# =========================================================
+# EXECUTAR LAMBDA PARA CRIAR AS TABELAS
+# =========================================================
+
+resource "aws_lambda_invocation" "criar_tabelas" {
+
+  function_name = aws_lambda_function.criar_tabelas.function_name
+
+  input = jsonencode({
+    acao = "criar_tabelas"
+  })
+
+  depends_on = [
+    aws_lambda_function.criar_tabelas,
+    aws_db_instance.rds_db
+  ]
+}

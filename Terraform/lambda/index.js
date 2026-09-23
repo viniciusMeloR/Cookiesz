@@ -72,9 +72,9 @@ exports.handler = async (event) => {
         await connection.execute(`
             CREATE TABLE IF NOT EXISTS usuario (
                 idUsuario INT PRIMARY KEY AUTO_INCREMENT,
-                nomeUsuario VARCHAR(100) NOT NULL,
-                senhaUsuario VARCHAR(255) NOT NULL
-            );
+                usuario VARCHAR(100) NOT NULL,
+                senha VARCHAR(255) NOT NULL
+                );
         `);
 
         console.log("Tabela usuario criada/verificada.");

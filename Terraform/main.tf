@@ -1,9 +1,9 @@
 #Criação da minha EC2
 resource "aws_instance" "instancia" {
-  ami           = "ami-01c265752adadcdf8"
-  instance_type = "t3.micro"
+  ami                         = "ami-01c265752adadcdf8"
+  instance_type               = "t3.micro"
   associate_public_ip_address = true
-  subnet_id     = aws_subnet.publica.id
+  subnet_id                   = aws_subnet.publica.id
   tags = {
     Name = "Vinicius-mapleStorage"
   }
@@ -198,8 +198,8 @@ resource "aws_route_table" "route_table_privada" {
 }
 #Minha subrede publica
 resource "aws_subnet" "publica" {
-  cidr_block = "10.0.1.0/24"
-  vpc_id     = aws_vpc.main.id
+  cidr_block        = "10.0.1.0/24"
+  vpc_id            = aws_vpc.main.id
   availability_zone = "us-east-2a"
   tags = {
     Name = "Vinicius mapleStorageSubRedePub"
