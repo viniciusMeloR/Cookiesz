@@ -5,7 +5,7 @@ resource "aws_instance" "instancia" {
   associate_public_ip_address = true
   subnet_id     = aws_subnet.publica.id
   tags = {
-    name = "Vinicius-mapleStorage"
+    Name = "Vinicius-mapleStorage"
   }
 
   user_data = templatefile("${path.module}/scripts/install.sh", {
@@ -41,7 +41,7 @@ resource "aws_db_instance" "rds_db" {
   vpc_security_group_ids = [aws_security_group.SGPriv.id]
 
   tags = {
-    name = "Vinicius mapleStorageRds"
+    Name = "Vinicius mapleStorageRds"
   }
 }
 
@@ -165,7 +165,7 @@ resource "aws_security_group" "SGPriv" {
 resource "aws_vpc" "main" {
   cidr_block = "10.0.0.0/16"
   tags = {
-    name = "Vinicius maplestorageMain"
+    Name = "Vinicius maplestorageMain"
   }
 }
 #Criação do meu gateway de acesso a internet
